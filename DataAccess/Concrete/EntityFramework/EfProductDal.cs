@@ -13,19 +13,20 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfProductDal : EfEntityRepositoryBase<Product, NordwindContext>, IProductDal
     {
-        List<ProductDetailDto> IProductDal.GetProductDetails()
+        
+        public List<ProductDetailDto> GetProductDetails()
         {
             using (NordwindContext context = new NordwindContext())
             {
                 var result = from p in context.Products
                              join c in context.Categories
                              on p.CategoryID equals c.CategoryID
-                             select new ProductDetailDto 
+                             select new ProductDetailDto
                              {
-                                 ProductId=p.ProductID,
-                                 CategoryName=c.CategoryName,
-                                 ProductName=p.ProductName,
-                                 UnitsInStock=p.UnitsInStock
+                                 ProductId = p.ProductID,
+                                 CategoryName = c.CategoryName,
+                                 ProductName = p.ProductName,
+                                 UnitsInStock = p.UnitsInStock
                              };
                 return result.ToList();
             }

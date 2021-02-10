@@ -6,9 +6,8 @@ using System.Text;
 
 namespace Entities.Concrete
 {
-    public class Category:IEntity//işaretleme
+    public class Category:IEntity
     {
-        //ÇIPLAK CLASS KALMASIN
         public int CategoryID { get; set; }
         public string CategoryName { get; set; }
     }
