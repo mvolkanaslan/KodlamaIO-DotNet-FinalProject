@@ -1,9 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules;
+using Core.Aspects.Autofac.Validation;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
+using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,28 +16,25 @@ namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
+        //Bu noktada business kodu ile Validation kodunu birbirine karıştırma.
+
         IProductDal _productDal;//Bu herşey olabilir
 
         public ProductManager(IProductDal productDal)
         {
             _productDal = productDal;
         }
-        //IResult ile bir şey döndürmeli
+        /* tüm ders burası */
+        [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(Product product)
         {
-            if (product.ProductName.Length<2)
-            {
-                //magic strings
-                return new ErrorResult(Messages.ProductNameInvalid);
-            }
             _productDal.Add(product);
-            return new SuccessResult(Messages.ProductAdded);
-            
+            return new SuccessResult(Messages.ProductAdded);            
         }
 
         public IDataResult<List<Product>> GetAll()
         {
-            if (DateTime.Now.Hour == 22)
+            if (DateTime.Now.Hour == 1)
             {
                 return new ErrorDataResult<List<Product>>(Messages.MaintenanceTime);
             }
